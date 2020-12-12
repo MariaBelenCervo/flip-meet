@@ -1,0 +1,47 @@
+<ion-view id="profile" view-title="Perfil">
+	<ion-nav-buttons side="secondary">
+		<a class="button" href="#/app/profile/{{user.id}}/edit">Editar</a>
+	</ion-nav-buttons>
+	<ion-content>
+		<ion-item class="item item-thumbnail-left">
+			<img src="{{imgRoute + 'default.jpg'}}">
+			<h2>{{user.name}} {{user.lastname}}</h2>
+		</ion-item>
+
+		<ion-list>
+			<ion-item>
+				Ubicación: <span>{{user.location}}</span>
+			</ion-item>
+			<ion-item>
+				Nacimiento: <span>{{user.birthday}}</span>
+			</ion-item>
+			<ion-item>
+				Me interesa: <span>{{user.interest}}</span>
+			</ion-item>
+		</ion-list>
+
+		<ion-list id="profile-actions">
+			<ion-item class="item-icon-left" menu-close href="#/app/home">
+				<i class="icon" id="profile-posts" ></i>
+					Publicaciones
+				<span class="badge badge-dark"> </span>
+			</ion-item>
+			<ion-item class="item-icon-left" href="" >
+				<i class="icon" id="profile-friends"></i>
+					Amigos
+				<span class="badge badge-dark"> </span>
+			</ion-item>
+			<ion-item class="item-icon-left" href="" >
+				<i class="icon" id="profile-fav"></i>
+					Favoritos
+				<span class="badge badge-dark"> </span>
+			</ion-item>
+			<ion-item class="item-icon-left" href="" >
+				<i class="icon" id="profile-events"></i>
+					Eventos
+				<span class="badge badge-dark"> </span>
+			</ion-item>
+		</ion-list>
+
+	</ion-content>
+</ion-view>

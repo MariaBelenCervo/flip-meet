@@ -1,0 +1,30 @@
+<ion-view id="profile-edit" view-title="Edición de Perfil">
+	<ion-content>
+		<form ng-submit="edit(user)">
+			<div class="list">
+				<label class="item item-input">
+          			<span class="input-label">Nombre</span>
+					<input type="text" ng-model="user.name">
+				</label>
+				<label class="item item-input">
+          			<span class="input-label">Apellido</span>
+					<input type="text" ng-model="user.lastname">
+				</label>
+				<label class="item item-input">
+          			<span class="input-label">Ubicación</span>
+					<input type="text" ng-model="user.location">
+				</label>
+				<label class="item item-input">
+          			<span class="input-label">Nacimiento</span>
+					<input type="text" ng-model="user.birthday">
+				</label>
+				<label class="item item-input item-select">
+					<span class="input-label">Me interesa</span>
+					<select ng-model="user.fkinterest" ng-options="interest.id as interest.interest for interest in interests">
+					</select>
+				</label>
+			</div>
+			<button class="button button-block button-positive" type="submit" >Editar</button>
+		</form>
+	</ion-content>
+</ion-view>

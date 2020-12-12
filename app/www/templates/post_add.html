@@ -1,0 +1,29 @@
+<ion-view id="post-add" view-title="Skatepark o spot">
+	<ion-content>
+		<div class="item item-divider">
+			Agregar datos
+		</div>
+		<form ng-submit="add(post)">
+			<div class="list">
+				<label class="item item-input item-stacked-label">
+					<span class="input-label">Título</span>
+					<input type="text" ng-model="post.title" placeholder="Ej: PQUE CENTENARIO">
+				</label>
+				<label class="item item-input item-stacked-label">
+					<span class="input-label">Ubicación</span>
+					<input type="text" ng-model="post.location" placeholder="Ej: Av. Patricias Argentinas">
+				</label>
+				<label class="item item-input item-stacked-label">
+					<span class="input-label">Descripción</span>
+					<textarea ng-model="post.description" placeholder="Descripción del lugar"></textarea>
+				</label>
+				<label class="item item-input item-select">
+					<span class="input-label">Categoría</span>
+					<select ng-model="post.fkcategory" ng-options="category.id as category.category for category in categories">
+					</select>
+				</label>
+			</div>
+			<button class="button button-block button-positive" type="submit" >Agregar</button>
+		</form>
+	</ion-content>
+</ion-view>

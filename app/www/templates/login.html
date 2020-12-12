@@ -1,0 +1,17 @@
+<ion-view id="login" view-title="Ingreso">
+  <ion-content>
+    <h1><span>FlipMeet</span></h1>
+    <form ng-submit="login(user)">
+      <div class="list">
+        <span></span><label id="email">
+          <input type="email" placeholder="Email" ng-model="user.email">
+        </label>
+        <span></span><label id="pass">
+          <input type="password" placeholder="Contraseña" ng-model="user.password">
+        </label>
+      </div>
+      <button class="button button-block button-positive" type="submit" >Ingresar</button>
+      <div><a class="button button-block button-positive" href="#/register" >Crear una cuenta</a></div>
+    </form>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,27 @@
+<ion-view id="post" view-title="{{post.title}}">
+	<ion-content>
+		<ion-item class="list card">
+			<div class="item item-body">
+				<!--<img class="full-image" src="{{imgRoute + 'skateparks_image2.jpg'}}">-->
+				<h2>{{post.title}}</h2>
+				<p><span>{{post.category}} | </span>{{post.location}}</p>
+				<p>{{post.description}}</p>
+				<p>
+					<!--<a href="#" class="subdued">{{post.comments}} Comentarios</a>-->
+					<a href="#/app/post/{{post.id}}/comment-add">Comentar</a>
+				</p>
+			</div>
+			
+			<ion-list>
+				<div class="item item-divider">
+					Comentarios
+				</div>
+				<ion-item class="item-avatar" ng-repeat="comment in comments">
+					<img src="{{imgRoute + 'default.jpg'}}">
+					<h3>{{comment.user}}</h3>
+					<p>{{comment.comment}}</p>
+				</ion-item>
+			</ion-list>
+		</ion-item>
+	</ion-content>
+</ion-view>

@@ -1,0 +1,9 @@
+Carrera: Diseño y Programación Web,
+Materia: Clientes Web Mobile y Programación III,
+Cuatrimestre: 4to,
+Año: 2018,
+Turno: noche,
+Comisión: DWTN4A,
+Nombre y apellido: María Belén Cervo,
+Docente: Santiago Gallino,
+Carácter de entrega (recuperatorio 2do parcial).

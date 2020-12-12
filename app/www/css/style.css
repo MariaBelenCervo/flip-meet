@@ -1,0 +1,521 @@
+@charset "utf-8";
+/* CSS Document */
+@import url('reset.css');
+@import url('../fonts/stylesheet.css');
+
+body {
+	background-color:#313235; /*gris oscuro*/
+	font-family:'Helvetica Neue Thin', Arial, sans-serif;
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+a {
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	color:#c9e107; /*verde chillón*/
+}
+
+.popup {
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	color:#313235; /*gris oscuro*/
+}
+
+#errorMsg {
+	color:#f6ff80;
+	white-space:pre-wrap;
+}
+
+#login {
+	background:url('../img/fondo_login_gris.jpg') center center no-repeat #313235; /*gris oscuro*/
+	background-size:100%;
+	text-align:center;
+}
+
+#login h1 span {
+	display:none;
+}
+
+#login h1 {
+	display:inline-block;
+	background:url('../img/logo_login200.png') center center no-repeat;
+	height:221px;
+	width:200px;
+}
+
+#login form {
+	width:80%;
+	display:inline-block;
+}
+
+#login form label {
+	display:block;
+	border-bottom:2px solid #c9e107; /*verde chillón*/
+	min-height:46px;
+	width:100%;
+	padding:1.3em 0 1.3em 0;
+}
+
+#login #email {
+	background:url('../img/username_icon28.png') left center no-repeat;
+}
+
+#login #pass {
+	background:url('../img/password_icon28.png') left center no-repeat;
+}
+
+#login form label input, #register form label input {
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	display:block;
+	background:none;
+	padding-left:3em;
+	font-size:1.15em;
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+#register form label input {
+	padding-left:0;
+}
+
+#login .button-positive,
+#post-add .button-positive,
+#profile-edit .button-positive,
+#comm-add .button-positive,
+#register .button-positive,
+.popup .button-positive {
+	background-color:#1d1d1d; /*casi negro*/
+	color:#c9e107; /*verde chillón*/
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	border-radius:0;
+}
+
+#post-add, #profile-edit, #comm-add, #register {
+	background:url('../img/fondo_register_gris.jpg') center center no-repeat #313235; /*gris oscuro*/
+	background-size:100%;
+}
+
+#post-add form label,
+#profile-edit form label,
+#comm-add form label,
+#register form label {
+	display:block;
+	border-bottom:2px solid #c9e107; /*verde chillón*/
+	min-height:46px;
+	width:100%;
+}
+
+#post-add form label span,
+#profile-edit form label span,
+#comm-add form label span, 
+#register form label span {
+	color:#c9e107; /*verde chillón*/
+}
+
+#post-add form label input,
+#post-add form label textarea,
+#profile-edit form label,
+#comm-add form label textarea {
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	display:block;
+	background:none;
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+#post-add form label textarea, #comm-add form label textarea {
+	padding-top:.8em;
+}
+
+#post-add form .item-select,
+#post-add form label select,
+#profile-edit form .item-select,
+#profile-edit form label select,
+#register form .item-select,
+#register form label select
+{
+	background:none;
+}
+
+#post-add form label option, #profile-edit form label option, #register form label option {
+	background-color:rgba(29,29,29,0.75);
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+#post-add .item-divider, #profile-edit .item-divider, #post .item-divider, #comm-add .item-divider {
+	background-color:rgba(29,29,29,0.75);
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	color:#d2d2d2; /*gris bien claro*/
+	padding:1em;
+}
+
+.bar.bar-stable {
+	text-align:left;
+	background-color:#1d1d1d;
+}
+
+.bar.bar-stable .title {
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	color:#d2d2d2; /*gris bien claro*/
+	text-align:left;
+}
+
+.bar .button.button-clear, .bar button.button-clear {
+	/*background-color:#d2d2d2;*/ /*gris bien claro*/
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+#home, #post {
+	background:url('../img/fondo_skaterparks.jpg') center center no-repeat #313235; /*gris oscuro*/
+	background-size:100%;
+}
+
+#home .item-avatar {
+	border:0;
+}
+
+#share-it{
+	background-color:rgba(29,29,29,0.75);
+	color:#c9e107; /*verde chillón*/
+	border:0;
+}
+
+#home .item-avatar h2, #home .item-avatar p {
+	color:#c9e107; /*verde chillón*/
+	width:80%;
+	white-space:pre-wrap;
+}
+
+#home .item-avatar h2 {
+	font-family:'Helvetica Neue Thin', Arial, sans-serif;
+}
+
+#home .item-avatar p {
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	font-size:1em;
+}
+
+#home .item-content, #home .item-content *, #home .item-complex {
+	background-color:#5b5b5b;
+	border:none;
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+#home .item-content {
+	padding:.2em;
+}
+
+#home .item-content p {
+	color:#fff;
+}
+
+.badge.badge-stable, .badge.badge-dark {
+	background:url('../img/enter_arrow15.png') center center no-repeat;
+	width:15px;
+	height:25px;
+	margin-top:1.5em;
+}
+
+#profile {
+	background:url('../img/fondo_profile.jpg') center center no-repeat #313235; /*gris oscuro*/
+	background-size:100%;
+}
+
+#profile .item-thumbnail-left {
+	background:none;
+	color:#d2d2d2; /*gris bien claro*/
+	margin:.7em 1em 1em 0;
+	border:0;
+}
+
+#profile .item-thumbnail-left h2 {
+	color:#d2d2d2; /*gris bien claro*/
+	font-size:1.3em;
+}
+
+#profile .list .item {
+	background-color:rgba(210,210,210,0.25); /*gris bien claro*/
+	color:#fff;
+	border:0;
+	margin-bottom:.3em;
+}
+
+#profile .list .item span {
+	color:#d2d2d2; /*gris bien claro*/
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+}
+
+#profile-actions .item-content {
+	background-color:#1d1d1d; /*gris oscuro*/
+	font-family:'Helvetica Neue Thin', Arial, sans-serif;
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+#side-menu .item-content {
+	background-color:#1d1d1d; /*gris oscuro*/
+	font-family:'Helvetica Neue Thin', Arial, sans-serif;
+	color:#d2d2d2; /*gris bien claro*/
+}
+
+#side-menu .item-content .item {
+	background-color:rgba(210,210,210,0.5); /*gris bien claro*/
+	font-family:'Helvetica Neue Thin', Arial, sans-serif;
+	color:#1d1d1d; /*gris bien claro*/
+	border:1px solid red;
+}
+
+#profile-posts {
+	background:url('../img/posts_icon25.png') center center no-repeat;
+	width:32px;
+	height:25px;
+	padding-top:1.5em;
+}
+
+#profile-friends {
+	background:url('../img/friends_icon25.png') center center no-repeat;
+	width:20px;
+	height:25px;
+	padding-top:1.5em;
+}
+
+#profile-fav {
+	background:url('../img/favorite_active25.png') center center no-repeat;
+	width:25px;
+	height:25px;
+	padding-top:1.5em;
+}
+
+#profile-events {
+	background:url('../img/events_icon_profile25.png') center center no-repeat;
+	width:26px;
+	height:25px;
+	padding-top:1.5em;
+}
+
+#profile .badge.badge-dark {
+	margin-top:0;
+}
+
+.secondary-buttons .button {
+	background:none;
+	border:0;
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	color:#c9e107; /*verde chillón*/
+}
+
+#post .list.card.item {
+	margin:1em auto;
+	padding:0;
+	width:90%;
+}
+
+#post .list.card.item .item-avatar {
+	background-color:#c6c6c6;
+}
+
+#post p {
+	font-family:'Helvetica Neue Bold', Arial, sans-serif;
+	color:#313235; /*gris oscuro*/
+}
+
+#side-menu .scroll-content {
+	background-color:#1d1d1d;
+}
+
+/*header {
+	background:url('../resources/img/fondo72.jpg') top center no-repeat;
+	background-attachment:fixed;
+	padding:4em;
+}
+
+nav {
+	margin:0 auto;
+	width:30%;
+}
+
+#panel nav {
+	width:51%;
+}
+
+nav > ul {
+	display:flex;
+	justify-content:space-between;
+}
+
+nav > ul > li {
+	text-align:center;
+	font-size:1.4em;
+}
+
+a {
+	color:#fff;
+}
+
+a:hover {
+	color:#d51c29;
+}
+
+p {
+	font-size:1.4em;
+}
+
+.active a {
+	font-family:'futurastd_medium', Arial, sans-serif;
+	text-shadow:0 0 5px #fff;
+}
+
+.point {
+	position:relative;
+}
+
+.point:before {
+	content:" ";
+	background:url('../resources/img/point.png') center center no-repeat;
+	width:7px;
+	height:7px;
+	position:absolute;
+	top:10px;
+	left:-1.2em;
+}
+
+.dropdown {
+	display:none;
+}
+
+.toggle {
+	position:relative;
+	cursor:pointer;
+}
+
+.dropdown {
+	position:absolute;
+	text-align:left;
+}
+
+.toggle:hover .dropdown {
+	display:block;
+}
+
+h1 span {
+	display:none;
+}
+
+h1 {
+	background:url('../resources/img/logo.png');
+	width:210px;
+	height:168px;
+	margin:3.375em auto;
+}
+
+#slogan {
+	margin-top:1.875em;
+	margin-bottom:3.25em;
+	display:inline-block;
+	font-family:'futurastd_medium', Arial, sans-serif;
+	font-size:2.8125em;
+	background:url('../resources/img/linea1.png') center left no-repeat, url('../resources/img/linea2.png') center right no-repeat;
+	padding:0 1.2em;
+}
+
+section {
+	padding:4em 4em 5em 4em;
+	background-color:#4a4c67;
+}
+
+section > h3 {
+	display:inline-block;
+	font-family:'futurastd_medium', Arial, sans-serif;
+	font-size:2.8125em;
+	background:url('../resources/img/misc.png') bottom left no-repeat;
+	padding-bottom:.3em;
+	margin-bottom:1em;
+}
+
+table {
+	width:80%;
+	margin:3.3125em auto 0 auto;
+}
+
+th, td {
+	text-align:center;
+	padding:.5em;
+}
+
+th {
+	background-color:#7E8199;
+	border:2px solid #4A4C67;
+	font-family:'futurastd_medium', Arial, sans-serif;
+	font-size:1.5625em;
+}
+
+td {
+	border:2px solid #7E8199;
+	font-size:1.4em;
+}
+
+footer > div:first-of-type {
+	padding:4em;
+}
+
+footer div:first-of-type ul {
+	display:flex;
+	justify-content:space-between;
+	width:90%;
+	margin:0 auto;
+}
+
+footer div:first-of-type ul li {
+	text-align:left;
+	font-size:1.4em;
+}
+
+footer p {
+	display:inline-block;
+	font-family:'futurastd_medium', Arial, sans-serif;
+	font-size:2.8125em;
+	background:url('../resources/img/misc.png') bottom left no-repeat;
+	padding-bottom:.3em;
+	margin-bottom:1em;
+}
+
+footer div:nth-of-type(2) ul {
+	display:flex;
+	justify-content:space-between;
+	margin:1em 0 4em 0;
+	padding:.5em 4em;
+	background-color:#4a4c67;
+}
+
+address {
+	font-style:normal;
+}*/
+
+/***** ESTILOS PARA EL FORMULARIO *****/
+/*
+form {
+	text-align:left;
+	margin:0 auto;
+	width:20%;
+}
+
+form label {
+	display:block;
+	font-size:1.4em;
+	margin-bottom:1em;
+}
+
+form label input {
+	display:block;
+	width:100%;
+	padding:.75em 1em;
+	margin-top:.5em;
+	font-size:.8em;
+}
+
+input[type=submit] {
+	font-size:1em;
+	padding:.75em 1em;
+	margin-top:1em;
+}
+
+input[type=submit]:hover {
+	background-color:#d51c29;
+	color:#fff;
+	cursor:pointer;
+}*/
