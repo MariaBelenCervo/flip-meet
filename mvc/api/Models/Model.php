@@ -6,10 +6,6 @@ use PDO;
 use Exception;
 use JsonSerializable;
 
-
-use Models\User;
-use Models\Post;
-
 /**
  * Clase que incluirá todas las funcionalidades básicas de creación, edición, obtención 
  * y eliminación de registros.
@@ -24,6 +20,12 @@ class Model implements JsonSerializable
 	
 	/** @var array - Los atributos de la tabla del modelo */
 	protected static $attributes = [];
+
+	/** @var array - Las reglas de validación de los atributos del modelo */
+	protected static $rules = [];
+
+	/** @var array - Los campos que son editables */
+	protected static $editable = [];
 
 	/**
 	 * Constructor del modelo
@@ -282,6 +284,17 @@ class Model implements JsonSerializable
 		return array_filter($data, $inAttributes, ARRAY_FILTER_USE_KEY);
 	}
 
+	/**
+	 * Filtra el array $rules únicamente con los attributos que son editables
+	 * @return array
+	 */
+	public static function editableRules() : array
+	{
+		$keys = array_flip(static::$editable);
+		return array_intersect_key(static::$rules, $keys);	
+	}
+
+
 	/* Utilizo el método __get para llamaer a los getters de esta instancia desde afuera
 	como si se estuviera accediendo directamente (sin encapsulamiento) a dicha propiedad */ 
 	/**
@@ -313,7 +326,7 @@ class Model implements JsonSerializable
 		} else {
 			throw new Exception("Propiedad $name inexistente en " . static::$table . ".");
 		}
-	} 
+	} 	
 
 	///////////////////SERIALIZACIÓN A FORMATO JSON////////////////////
 	/**

@@ -3,6 +3,11 @@
 que realicen los servicios del front-end*/
 
 use Core\App;
+use Exceptions\HttpException;
+use Exceptions\UnprocessableEntityHttpException;
+use Responses\HttpErrorResponse;
+use Responses\HttpResponse;
+
 
 //Incluyo el autoload
 require __DIR__ . '/../autoload.php';
@@ -19,5 +24,20 @@ require $rootPath . '/api/routes.php';
 //Para que calcule las rutas más fácilmente, le paso el $rootPath
 $app = new App($rootPath);
 
-//Finalmente, ejecuto la aplicación
-$app->run();
+try {
+    //Finalmente, ejecuto la aplicación
+    $app->run();
+} catch (UnprocessableEntityHttpException $e) {
+    // Atajo excepciones especificamente de errores de validación
+    $resp = new HttpErrorResponse($e);
+    $resp->validationErrors = $e->getValidationErrors();
+    $resp->send();
+} catch (HttpException $e) { 
+    // Atajo excepciones provenientes de http
+    (new HttpErrorResponse($e))->send();
+} catch (Exception $e) {
+    // Atajo excepciones mas generales
+    (new HttpResponse(500, "Internal Server Error", $e->getMessage()))->send();
+}
+
+

@@ -14,17 +14,23 @@ class Comment extends Model
 	/**
    	 * @var string $table - Nombre de la tabla de Comment
    	 * @var string $primaryKey - Clave primaria de Comment
+     * @var array $rules - Reglas de validación
+	 * @var array $editable - Los campos que son editables
      * @var array $attributes - Campos de los registros de Comment
      */
-	protected static $table = 'user_comments_post';
+	protected static $table = 'comments';
 	protected static $primaryKey = 'id';
 	protected static $attributes = [
 		'id',
 		'fkuser', 
 		'fkpost', 
-		'startdate',
-		'comment'
+		'creationDate',
+		'text'
 	];
+	public static $rules = [
+		'text' => ['required', 'max:255'],
+	];
+	public static $editable = ['text'];
 
 	/* Todas las propiedades de esta clase serán protected, para permitir el reúso futuro y la posibilidad de definir otra clase que herede de ésta */
   	/**
@@ -32,14 +38,13 @@ class Comment extends Model
    	 * @var int $fkuser - ID del usuario que hizo ese comentario
    	 * @var int $fkpost - ID de la publicación en la que se hizo ese comentario
    	 * @var string $startdate - Fecha de alta del comentario
-   	 * @var string $startdate - Fecha de alta del comentario
-   	 * @var string $comment - Contenido del comentario
+   	 * @var string $text - Contenido del comentario
      */
 	protected $id;
 	protected $fkuser;
 	protected $fkpost;
-	protected $startdate;
-	protected $comment;
+	protected $creationDate;
+	protected $text;
 
 	// Propiedades propias de esta clase pero que no forman parte de los atributos del modelo
 	/**
@@ -89,12 +94,10 @@ class Comment extends Model
 	{
 		$objs = parent::getByAttribute('id', $id);
 
-		if (is_array($objs)) {
-			if (!isset($objs[0])) {
-				throw new Exception("Error al obtener comentario. ID = $id inexistente en la tabla " . static::$table . ".");
-			}
-			return $objs[0];
+		if (!isset($objs[0])) {
+			throw new Exception("Error al obtener comentario. ID = $id inexistente en la tabla " . static::$table . ".");
 		}
+		return $objs[0];
 	}
 
 	/**

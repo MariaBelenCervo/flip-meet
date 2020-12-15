@@ -33,7 +33,7 @@ class DBConnection
 	/**
 	* Abre la conexión a la base de datos a través de PDO
 	*/
-	public static function openCnn()
+	private static function openCnn()
 	{
 		// Variables que contienen los datos de conexión
 		$DBhost = "localhost";

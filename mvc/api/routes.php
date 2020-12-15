@@ -4,6 +4,7 @@ Cualquier ruta que no se encuentre definida en este documento lanzará un error 
 como corresponda por el front-end*/
 
 use Core\Route;
+use Middlewares\AuthMiddleware;
 
 //Agrego las rutas con las que voy a trabajar a lo largo de toda la aplicación
 /*
@@ -16,9 +17,9 @@ use Core\Route;
 
 Route::add('POST', 'api/login', 'LogController@login');
 
-Route::add('GET', 'api/users/{id}', 'UsersController@get');
+Route::add('GET', 'api/users/{id}', 'UsersController@get', AuthMiddleware::class);
 Route::add('POST', 'api/users', 'UsersController@add');
-Route::add('PUT', 'api/users/{id}', 'UsersController@edit');
+Route::add('PUT', 'api/users/{id}', 'UsersController@edit', AuthMiddleware::class);
 
 Route::add('GET', 'api/posts', 'PostsController@getAll');
 Route::add('GET', 'api/posts/{id}', 'PostsController@get');

@@ -22,7 +22,9 @@ class Log
 
 			//Devuelvo un array con los datos del usuario autenticado: su token y sus propiedades como User
 			return ['token' => $token, 'user' => $user];
-		}		
+		}
+
+		return ['token' => null, 'user' => null];
 	}
 
 

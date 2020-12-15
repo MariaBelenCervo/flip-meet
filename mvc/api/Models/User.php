@@ -15,7 +15,9 @@ class User extends Model
    	 * @var string $table - Nombre de la tabla de User
    	 * @var string $primaryKey - Clave primaria de User 'id'
      * @var array $attributes - Campos de los registros de User
-     */
+     * @var array $rules - Reglas de validación
+	 * @var array - Los campos que son editables
+	*/
 	protected static $table = 'users';
 	protected static $primaryKey = 'id';
 	protected static $attributes = [
@@ -30,6 +32,16 @@ class User extends Model
 		'birthday',
 		'fkinterest'
 	];
+	public static $rules = [
+		'name' => ['required', 'max:75'],
+		'lastname' => ['required', 'max:75'],
+		'email' => ['required', 'email'],
+		'password' => ['required', 'min:5', 'max:16'],
+		'location' => ['min:4'],
+		'birthday' => ['required']
+	];
+	public static $editable = ['name', 'lastname', 'password', 'location', 'birthday', 'photo', 'fkinterest'];
+
 
 	/* Todas las propiedades de esta clase serán protected, para permitir el reúso futuro y la posibilidad
 	de definir otra clase que herede de ésta */
@@ -87,10 +99,33 @@ class User extends Model
 		}
 		/* Hago un merge entre los datos que se quieren insertar desde $data y los que agrega esta función,
 		que son estado ACTIVE y fecha actual para el alta (necesarios cuando se crea un usuario) */
-		$data = array_merge($data, ['startdate' => date('Y-m-d H:i:s')]);
+		$data = array_merge($data, ['startdate' => date('Y-m-d H:i:s')]); // FIXME Agregar estado ACTIVE?
 
 		return parent::create($data);
 	}
+
+	/**
+	 * Actualiza el usuario
+	 * @param array $data - Los datos a actualizar
+	 * @return bool - TRUE si se actualizó correctamente el usuario, de lo contrario FALSE.
+	 * @throws Exception - Si hubo algún error en la DB y no se pudo actualizar el registro
+	 */	
+	public function update(array $data) : bool
+	{
+		// Obtengo la parte útil del input type date del front-end
+		$data['birthday'] = substr($data['birthday'], 0, 10);
+
+		// Encripto la contraseña
+		if($data['password'] !== null) {
+			$data['password'] = Hash::make($data['password']);
+		}
+		/* Hago un merge entre los datos que se quieren insertar desde $data y los que agrega esta función,
+		que son estado ACTIVE y fecha actual para el alta (necesarios cuando se crea un usuario) */
+		$data = array_merge($data, ['startdate' => date('Y-m-d H:i:s')]); // FIXME Agregar estado ACTIVE?
+
+		return parent::update($data);
+	}
+
 
 	/**
 	 * Devuelve un usuario según su email
@@ -102,9 +137,7 @@ class User extends Model
 	{
 		$objs = parent::getByAttribute('email', $email);
 
-		if (is_array($objs)) {
-			return $objs[0] ?? null;
-		}
+		return $objs[0] ?? null;
 	}
 
 	/**
@@ -117,12 +150,10 @@ class User extends Model
 	{
 		$objs = parent::getByAttribute('id', $id);
 
-		if (is_array($objs)) {
-			if (!isset($objs[0])) {
-				throw new Exception("Error al obtener usuario. UserID = $id inexistente en la tabla " . static::$table . ".");
-			}
-			return $objs[0];
+		if (!isset($objs[0])) {
+			throw new Exception("Error al obtener usuario. UserID = $id inexistente en la tabla " . static::$table . ".");
 		}
+		return $objs[0];
 	}
 
 	//////////////////////////////GETTERS//////////////////////////////
@@ -349,7 +380,6 @@ class User extends Model
 		$json = parent::JsonSerialize();
 		$json['interest'] = $this->interest;
 		return $json;
-	}
-
+	}	
 
 }

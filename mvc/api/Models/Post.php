@@ -1,11 +1,10 @@
 <?php
 namespace Models;
 
-use Models\Category;
 use Exception;
 
 /**
- * Clase que manejará todo lo referente a la tabla posts (publicaciones)
+ * Clase que manejará todo lo referente a la tabla posts (publicaciones simples en el muro de un usuario)
  */
 class Post extends Model
 {
@@ -14,59 +13,39 @@ class Post extends Model
    	 * @var string $table - Nombre de la tabla de Post
    	 * @var string $primaryKey - Clave primaria de Post
      * @var array $attributes - Campos de los registros de Post
+     * @var array $rules - Reglas de validación
+	 * @var array $editable - Los campos que son editables
      */
 	protected static $table = 'posts';
 	protected static $primaryKey = 'id';
 	protected static $attributes = [
 		'id',
-		'photo', 
-		'title',
-		'location',
-		'description', 
-		'startdate',
-		'fkuser',
-		'fkcategory'
+		'text',
+		'creationDate',
+		'fkuser'
 	];
+	public static $rules = [
+		'text' => ['required', 'max:255'],
+	];
+	public static $editable = ['text'];
+
 
 	/* Todas las propiedades de esta clase serán protected, para permitir el reúso futuro y la posibilidad
 	de definir otra clase que herede de ésta */
   	/**
-   	 * @var int $id - ID del post
-   	 * @var string $photo - Foto principal del post
-   	 * @var string $title - Título del post
-   	 * @var string $location - Dirección y ciudad del skatepark o spot publicado
-   	 * @var string $startdate - Fecha de alta del post
-   	 * @var int $fkcategory - ID de la categoría de este post (skatepark o spot)
+   	 * @var int $id - ID de la publicacion
+   	 * @var string $text - Texto de la publicacion
+   	 * @var string $creationDate - Fecha de alta de la publicacion
+   	 * @var int $fkuser - ID del usuario que realizó la publicacion
      */
 	protected $id;
-	protected $photo;
-	protected $title;
-	protected $location;
-	protected $description;
-	protected $startdate;
+	protected $text;
+	protected $creationDate;
 	protected $fkuser;
-	protected $fkcategory;
-
-	// Atributo propio de mi clase pero no de mi tabla
-	protected $category;
 
 	/**
-	 * Setea las propiedades del objeto instanciado en base al array proporcionado
-	 * @param array $data
-	 * @return void
-	 */
-	public function loadDataFromRow(array $data)
-	{
-		// Heredo del parent
-		parent::loadDataFromRow($data);
-
-		// Extiendo su funcionalidad
-		$this->setCategory($this->fkcategory);
-	}
-
-	/**
-	 * Crea un nuevo post y lo almacena en la base de datos
-	 * @param array $data - Los datos del post a crear
+	 * Crea una nueva publicación y la almacena en la base de datos
+	 * @param array $data - Los datos de la publicacion a crear
 	 * @return static
   	 * @throws Exception - Si hubo algún error en la DB y no se pudo crear el post 
 	 */
@@ -74,28 +53,9 @@ class Post extends Model
 	{
 		/* Hago un merge entre los datos que se quieren insertar desde $data y los que agrega esta función,
 		que es la fecha actual para el alta (necesarios cuando se crea un post) */
-		$data = array_merge($data, ['startdate' => date('Y-m-d H:i:s')]);
+		$data = array_merge($data, ['creationDate' => date('Y-m-d H:i:s')]);
 
 		return parent::create($data);
-	}
-
-	/**
-	 * Devuelve un Post según su ID
-	 * @param int $id - ID del post que quiero recuperar
-	 * @return self - El post correspondiente a $id
-  	 * @throws Exception - Si hubo algún error en la DB o si no existe un post con ese ID  
-	 */	
-	public static function getByID(int $id) 
-	{
-		$objs = parent::getByAttribute('id', $id);
-
-		if (is_array($objs)) {
-			if (!isset($objs[0])) {
-				throw new Exception("Error al obtener publicación. ID = $id inexistente en la tabla " . static::$table . ".");
-			}
-
-			return $objs[0];
-		}
 	}
 
 	//////////////////////////////GETTERS//////////////////////////////
@@ -110,48 +70,21 @@ class Post extends Model
 	}
 
 	/**
-	 * Devuelve la foto del post actual
-	 * @return string
-	 */
-	public function getPhoto() : string
-	{
-		return $this->photo;
-	}
-
-	/**
-	 * Devuelve el título del post actual
-	 * @return string
-	 */
-	public function getTitle()
-	{
-		return $this->title;
-	}
-
-	/**
-	 * Devuelve la dirección y ciudad del post actual
-	 * @return string
-	 */
-	public function getLocation() : string
-	{
-		return $this->location;
-	}
-
-	/**
 	 * Devuelve la descripción del post actual
 	 * @return string
 	 */
-	public function getDescription() : string
+	public function getText() : string
 	{
-		return $this->description;
+		return $this->text;
 	}
 
 	/**
 	 * Devuelve fecha y hora de alta del post actual
 	 * @return string
 	 */
-	public function getStartdate() : string
+	public function getCreationDate() : string
 	{
-		return $this->startdate;
+		return $this->creationDate;
 	}
 
 	/**
@@ -164,22 +97,16 @@ class Post extends Model
 	}
 
 	/**
-	 * Devuelve el ID de la categoría a la que pertenece el post actual
-	 * @return int
-	 */
-	public function getFkcategory() : int
+	 * Devuelve el User que hizo este post
+	 * @return User - El usuario cuyo ID es fkuser
+  	 * @throws Exception - Si hubo algún error en la DB  
+	 */	
+	public function getUser() : User
 	{
-		return $this->fkcategory;
+		return User::getByID($this->fkuser);
 	}
 
-	/**
-	 * Devuelve la categoría a la que pertenece el post actual (skatepark o spot)
-	 * @return string
-	 */
-	public function getCategory() : string
-	{
-		return $this->category;
-	}
+
 
 	//////////////////////////////SETTERS//////////////////////////////
 	/* Setter protected, las propiedades son read-only desde afuera de la clase */
@@ -195,53 +122,23 @@ class Post extends Model
 	}
 
 	/**
-	 * Setea la foto del post actual
-	 * @param string $photo
-	 * @return void
-	 */
-	protected function setPhoto(string $photo)
-	{
-		$this->photo = $photo;
-	}
-
-	/**
-	 * Setea el título del post actual
-	 * @param string $title
-	 * @return void
-	 */
-	protected function setTitle(string $title)
-	{
-		$this->title = $title;
-	}
-
-	/**
-	 * Setea la ubicación del post actual
-	 * @param string $location
-	 * @return void
-	 */
-	protected function setLocation(string $location)
-	{
-		$this->location = $location;
-	}
-
-	/**
 	 * Setea la descripción del post actual
 	 * @param string $description
 	 * @return void
 	 */
-	protected function setDescription(string $description)
+	protected function setText(string $text)
 	{
-		$this->description = $description;
+		$this->text = $text;
 	}
 
 	/**
 	 * Setea la fecha y hora de alta del post actual
-	 * @param string $startdate
+	 * @param string $creationDate
 	 * @return void
 	 */
-	protected function setStartdate(string $startdate)
+	protected function setCreationDate(string $creationDate)
 	{
-		$this->startdate = $startdate;
+		$this->creationDate = $creationDate;
 	}
 
 	/**
@@ -253,38 +150,5 @@ class Post extends Model
 	{
 		$this->fkuser = $fkuser;
 	}
-
-	/**
-	 * Setea el ID de la categoría del post actual
-	 * @param int $fkcategory
-	 * @return void
-	 */
-	protected function setFkcategory(int $fkcategory)
-	{
-		$this->fkcategory = $fkcategory;
-	}
-
-	/**
-	 * Setea la categoría del post actual
-	 * @param int $fkcategory
-	 * @return void
-	 */
-	protected function setCategory(int $fkcategory)
-	{
-		$this->category = ucfirst(Category::getByID($fkcategory)->category);
-	}
-
-	///////////////////SERIALIZACIÓN A FORMATO JSON////////////////////
-	/**
-	 * Método de serialización a JSON.
-	 * @return array
-	 */
-	public function JsonSerialize()
-	{
-		$json = parent::JsonSerialize();
-		$json['category'] = $this->category;
-		return $json;
-	}
-
 
 }

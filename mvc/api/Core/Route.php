@@ -23,11 +23,30 @@ class Route
 		'DELETE' => []
 	];
 
+	/** @var array $middlewares
+	 * Array que almacena por cada verbo y url, el correspondiente middleware (si tiene)
+	 */
+	private static $middlewares = [
+		'GET'    => [
+			/*
+			url => controller
+			Ej:
+			'users' => AuthMiddleware::class
+			*/
+		],
+		'POST'   => [],
+		'PUT' 	 => [],
+		'DELETE' => []
+	];
+
 	/** @var array $urlParams - Los parámetros de la url recibida, en caso de haberlos */
 	private static $urlParams = [];
 
 	/** @var string $controllerAction - El nombre y método del controller que corresponde a la ruta */
 	private static $controllerAction;
+
+	/** @var string $middlewareClass - Middleware asociado a la ruta */
+	private static $middlewareClass;
 
 	/**
 	 * Constructor privado para asegurar el Singleton
@@ -37,16 +56,20 @@ class Route
 	{}
 
 	/**
-	 * Agrega una ruta al array de rutas de la app
+	 * Agrega una ruta al array de rutas de la app y un middleware (si es que hay)
 	 * @param string $method
 	 * @param string $url
 	 * @param string $controller - Con el formato "NombreController@nombreMétodo".
+	 * @param string|null $middleware - Middleware asociado a esa ruta.
 	 */
-	public static function add(string $method, string $url, string $controller)
+	public static function add(string $method, string $url, string $controller, ?string $middleware = null)
 	{
 		$method = strtoupper($method);
 		// Guardo el controlador y su método en la clave $url de la clave $method del array $routes
 		self::$routes[$method][$url] = $controller;
+
+		// Guardo el middleware en la clave $url de la clave $method del array $middlewares
+		self::$middlewares[$method][$url] = $middleware;
 	}
 
 	/**
@@ -99,6 +122,9 @@ class Route
 				if(self::compareParts($urlParts, $routeParts)) {
 					// La ruta existe, así que almaceno el nombre del controller
 					self::$controllerAction = $controllerAction;
+
+					// Almaceno el middleware (puede ser null si no existe)
+					self::$middlewareClass = self::$middlewares[$method][$route];
 
 					return true;
 				}
@@ -170,6 +196,24 @@ class Route
 		}
 
 		return self::$routes[$method][$url];
+	}
+
+	/**
+	 * Retorna el middleware asociado, puede ser null si no existe
+	 * @param string $method
+	 * @param string $url
+	 * @return string|null
+	 */
+	public static function getMiddleware(string $method, string $url) : ?string
+	{
+		// Si hay un controllerAction no vacío, se trata de un paramRoute, entonces
+		// retorno el middleware almacenado
+		if(!empty(self::$controllerAction)) {
+			return self::$middlewareClass;
+		}
+
+		// Caso de ruta sin parámetros
+		return self::$middlewares[$method][$url];
 	}
 
 	/**

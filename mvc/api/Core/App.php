@@ -2,6 +2,8 @@
 namespace Core;
 
 use Exception; /*nativa*/
+use \Closure;
+
 
 /**
  * Clase que se encargará de correr y manejar todo lo referente a la aplicación
@@ -71,29 +73,55 @@ class App
 			haber llegado en la url de la petición y los agrego al array $bodyParams*/
 			$params = Request::parseParams($bodyParams, Route::getUrlParams());
 
-			// Ejecuto el método de ese controlador
-			$this->runController($this->controllerName, $this->controllerMethod, $params);
+			// Función a ejecutar del controller
+			$controllerFunc = $this->controllerClosure($this->controllerName, $this->controllerMethod, $params);
+
+			$middlewareClass = Route::getMiddleware($method, $url);
+
+			// No hay middleware, ejecutar directamente el controller
+			if ($middlewareClass === null) {
+				$controllerFunc(null);
+			} else {
+				// Si hay un middleware, ejecutarlo pasándole el closure del controller como parámetro
+				$mid = new $middlewareClass();
+				$mid->handle($this->request, $controllerFunc);
+			}
 		} 
 	}
+
+
+	/**
+     * Wrappea la acción del controller en un Closure (para pasárselo al middleware)
+	 * @param string $controller
+	 * @param string $method
+	 * @param object $params
+     * @return Closure
+     */
+    private function controllerClosure(string $controller, string $method, $params) : Closure
+    {
+        return function($data) use($controller, $method, $params) {
+            $this->runController($controller, $method, $params, $data);
+        };
+    }
 
 	/**
 	 * Ejecuta el controller
 	 * @param string $controller
 	 * @param string $method
 	 * @param object $params
+	 * @param array $data
 	 */
-	private function runController(string $controller, string $method, $params)
+	private function runController(string $controller, string $method, $params, $data = null)
 	{
 		// Antes que nada, agrego el namespace del controller
 		// Ej: \Controllers\LogController
 		$controller = "\\Controllers\\" . $controller;
-
 		// Instancio ese controller
 		// Ej: $this->controller = new \Controllers\HomeController;
 		$this->controller = new $controller;
 
 		// Ejecuto el método con sus parámetros
-		$this->controller->{$method}($params);
+		$this->controller->{$method}($params, $data);
 	}
 
 

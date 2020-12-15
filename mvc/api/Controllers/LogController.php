@@ -2,7 +2,10 @@
 namespace Controllers;
 
 use Auth\Log;
-use Core\View;
+use Exceptions\UnprocessableEntityHttpException;
+use Exceptions\UnauthorizedHttpException;
+use Responses\HttpDataResponse;
+use Validation\Validator;
 
 /**
  * Clase que se encargará de manejar los métodos de clases correspondientes al logueo de usuarios
@@ -13,55 +16,40 @@ class LogController
 	/**
 	 * Devuelve la respuesta y los datos correspondientes luego del intento de login
 	 * @param object $inputs
-	 * @return JSON
 	 */
 	public function login($inputs)
 	{
-		$jsonResp['status'] = 0;
-		$jsonResp['msgs'] = [];
-
-		try {
-			if(isset($inputs->email) && isset($inputs->password)) {
-				// Intento realizar el login
-				$data = Log::login($inputs->email, $inputs->password);
-
-				// Si todo fue correcto y no se lanzó ninguna excepción, recibiré un token y un objeto usuario
-				$token = $data['token'];
-				$user = $data['user'];
-
-				if($user) {
-					// Respuesta en caso de success
-					$jsonResp['data'] = [
-						'token' 	=> $token,
-						'id' 		=> $user->id,
-						'email' 	=> $user->email,
-						'nombre' 	=> $user->name
-					];
-				} else {
-					// Respuesta en caso de error
-					$jsonResp['status'] = -1;
-					$jsonResp['msgs'] = [
-						'error' => 'Email y/o password incorrectos.'
-					];
-				}
-
-			} else {
-				$jsonResp['status'] = -1;
-				$jsonResp['msgs'] = [
-					'error' => 'Ambos campos son obligatorios.'
-				];
-			}
-			
-		} catch (Exception $e) {
-			// Respuesta en caso de Exception
-			$jsonResp['status'] = -1;
-			$jsonResp['msgs'] = [
-				'error' => 'Se han detectado problemas de conexión a la base de datos. Por favor, inténtelo nuevamente.'
-			];	
+		$data = (array) $inputs;
+		$validator = new Validator($data, [
+			'email' => ['required', 'email'],
+			'password' => ['required']
+		]);
+	
+		if (!$validator->passes()) {
+			throw new UnprocessableEntityHttpException($validator->getErrors());
 		}
 
-		View::renderJson($jsonResp);
-	}
+		// Intento realizar el login
+		$data = Log::login($inputs->email, $inputs->password);
 
+		// Si todo fue correcto y no se lanzó ninguna excepción, recibiré un token y un objeto usuario
+		$token = $data['token'];
+		$user = $data['user'];
+
+		if ($user === null) {
+			throw new UnauthorizedHttpException("Email y/o password incorrectos.", "Falló login");
+		} 
+
+		// Respuesta en caso de success
+		$resp = (object) [
+			'token' => $token,
+			'id' => $user->id,
+			'email' => $user->email,
+			'nombre' => $user->name
+		];
+		
+		(new HttpDataResponse($resp))->send();
+
+	}
 
 }
